@@ -1,0 +1,59 @@
+# StudyGenie
+A smart study planeer with personalized study schedules,exam countdown,and study alarms
+📚 StudyGenie – AI Smart Study Assistant
+
+StudyGenie is a student-focused study planning web application designed to help learners organize their study time, prepare for exams, and build better study habits.
+
+✨ Features
+
+- 📅 Personalized study plan based on subjects, exam date, and daily study hours
+- ⏳ Exam countdown and daily schedule
+- ⏰ Study alarm reminder while the page remains open
+- 📖 Subject-wise study tasks and revision suggestions
+- 💡 Simple and student-friendly interface
+
+🛠️ Technologies Used
+
+- Python
+- Flask
+- HTML
+- CSS
+- JavaScript
+- OpenAI API integration (where configured)
+
+🚀 How to Run Locally
+
+1. Clone this repository:
+   "git clone https://github.com/Banasripatra/StudyGenie.git"
+
+2. Open the project folder:
+   "cd StudyGenie"
+
+3. Install dependencies:
+   "pip install -r requirements.txt"
+
+4. Create a ".env" file in the project root and add your API key if using OpenAI:
+   "OPENAI_API_KEY=your_api_key_here"
+
+5. Start the application:
+   "python app.py"
+
+6. Open "http://127.0.0.1:5000/" in your browser.
+
+🔐 Security
+
+Never upload your ".env" file or expose your API key publicly. Keep ".env" in ".gitignore".
+
+🎯 Goal
+
+StudyGenie aims to make exam preparation more organized, manageable, and student-friendly.
+
+👩‍💻 Developer
+
+Banasri Patra
+
+GitHub: https://github.com/Banasripatra
+
+📌 Note
+
+This project is under development. Features that require an active API key or external service may need additional configuration.
