@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>StudyGenie - AI Smart Study Assistant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        header {
+            background: #4f46e5;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            margin-top: 8px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: #4f46e5;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 90px;
+            resize: none;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #3730a3;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eef2ff;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>📚 StudyGenie</h1>
+    <p>AI Smart Study Assistant</p>
+</header>
+
+<div class="container">
+
+    <div class="card">
+        <h2>🎯 Create Your Study Plan</h2>
+
+        <label>Student Name</label>
+        <input type="text" id="name" placeholder="Enter your name">
+
+        <label>Subjects</label>
+        <textarea id="subjects"
+            placeholder="Example: OS, DAA, Computer Networks, Mathematics"></textarea>
+
+        <label>Exam Date</label>
+        <input type="date" id="exam_date">
+
+        <label>Study Hours Per Day</label>
+        <input type="number" id="hours" placeholder="Example: 4">
+
+        <label for="study_time">⏰ Study Start Time:</label>
+        <input type="time" id="study_time">
+
+        <button type="button" onclick="setStudyAlarm()">
+    🔔 Set Study Alarm
+        </button>
+
+        <p id="alarmStatus"></p>
+        <button onclick="generatePlan()">
+            Generate Study Plan
+        </button>
+
+        <div id="result"></div>
+    </div>
+
+    <div class="card">
+        <h2>✨ StudyGenie Features</h2>
+
+        <div class="features">
+
+            <div class="feature">
+                📅 <b>AI Study Planner</b>
+                <p>Generate a personalized study schedule.</p>
+            </div>
+
+            <div class="feature">
+                🤖 <b>AI Doubt Solver</b>
+                <p>Get simple explanations for difficult topics.</p>
+            </div>
+
+            <div class="feature">
+                📝 <b>AI Quiz Generator</b>
+                <p>Create questions
+                  
+                    <script>
+function generatePlan() {
+
+    const name = document.getElementById("name").value;
+    const subjects = document.getElementById("subjects").value;
+    const exam_date = document.getElementById("exam_date").value;
+    const hours = document.getElementById("hours").value;
+
+    if (name === "" || subjects === "" || exam_date === "" || hours === "") {
+        alert("Please fill in all the details.");
+        return;
+    }
+
+    fetch("/generate-plan", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: name,
+            subjects: subjects,
+            exam_date: exam_date,
+            hours: hours
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+        const result = document.getElementById("result");
+
+        result.style.display = "block";
+
+        result.innerHTML = `
+            <div style="
+                background: white;
+                padding: 20px;
+                margin-top: 20px;
+                border-radius: 12px;
+                border-left: 5px solid #4f46e5;
+            ">
+
+                <h3>🎉 ${data.message}</h3>
+
+                <p><b>👩‍🎓 Student:</b> ${name}</p>
+
+                <p><b>📅 Exam Date:</b> ${data.exam_date}</p>
+
+                <p><b>⏳ Days Remaining:</b> ${data.days_remaining}</p>
+
+                <p><b>📚 Study Time:</b> ${data.hours_per_day} hours/day</p>
+
+                <hr>
+
+                <h3>🤖 AI Personalized Study Plan</h3>
+
+                <div style="
+                    white-space: pre-wrap;
+                    line-height: 1.7;
+                    margin-top: 15px;
+                ">
+                    ${data.ai_plan}
+                </div>
+
+            </div>
+        `;
+    })
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Something went wrong. Please try again.");
+
+    });
+}
+function setStudyAlarm() {
+
+    const time = document.getElementById("study_time").value;
+    const status = document.getElementById("alarmStatus");
+
+    if (time === "") {
+        alert("Please select a study time.");
+        return;
+    }
+
+    const [hours, minutes] = time.split(":");
+
+    const now = new Date();
+    const alarmTime = new Date();
+
+    alarmTime.setHours(hours);
+    alarmTime.setMinutes(minutes);
+    alarmTime.setSeconds(0);
+    alarmTime.setMilliseconds(0);
+
+    if (alarmTime <= now) {
+        alarmTime.setDate(alarmTime.getDate() + 1);
+    }
+
+    const delay = alarmTime - now;
+
+    status.innerText =
+        "🔔 Study alarm set for " +
+        alarmTime.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+    setTimeout(function () {
+        alert("📚⏰ Study Time! Open StudyGenie and start studying!");
+    }, delay);
+}
+</script>
